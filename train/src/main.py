@@ -3,7 +3,10 @@ import re
 from dotenv import load_dotenv
 from dataclasses import asdict
 
+if "LOGLEVEL" in os.environ:
+    os.environ["LOGLEVEL"] = os.environ["LOGLEVEL"].upper()
 os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"
+
 import math
 import random
 import threading
