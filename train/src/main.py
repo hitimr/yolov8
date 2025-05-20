@@ -147,9 +147,7 @@ def update_split_tabs_for_nested_datasets(selected_dataset_ids):
 
     split_methods.append("Random")
     tabs_descriptions.append("Shuffle data and split with defined probability")
-    contents.append(
-        Container([RandomSplitsTable(sum_items_count)], direction="vertical", gap=5)
-    )
+    contents.append(Container([RandomSplitsTable(sum_items_count)], direction="vertical", gap=5))
 
     split_methods.append("Based on item tags")
     tabs_descriptions.append("Images should have assigned train or val tag")
@@ -207,9 +205,7 @@ def update_globals(new_dataset_ids):
         project_meta = sly.ProjectMeta.from_json(api.project.get_meta(project_id))
         print(f"Project is {project_info.name}, {dataset_ids}")
     elif project_id:
-        workspace_id = api.project.get_info_by_id(
-            project_id, raise_error=True
-        ).workspace_id
+        workspace_id = api.project.get_info_by_id(project_id, raise_error=True).workspace_id
         project_info = api.project.get_info_by_id(project_id)
         project_meta = sly.ProjectMeta.from_json(api.project.get_meta(project_id))
     else:
@@ -238,9 +234,7 @@ dataset_selector = SelectDatasetTree(
     select_all_datasets=True,
     allowed_project_types=[sly.ProjectType.IMAGES],
 )
-use_cache_text = Text(
-    "Use cached data stored on the agent to optimize project download"
-)
+use_cache_text = Text("Use cached data stored on the agent to optimize project download")
 use_cache_checkbox = Checkbox(use_cache_text, checked=True)
 select_data_button = Button("Select data")
 select_done = DoneLabel("Successfully selected input data")
@@ -261,9 +255,7 @@ project_settings_content = Container(
         reselect_data_button,
     ]
 )
-card_project_settings = Card(
-    title="Dataset selection", content=project_settings_content
-)
+card_project_settings = Card(title="Dataset selection", content=project_settings_content)
 
 
 ### 2. Project classes
@@ -315,9 +307,7 @@ card_classes.lock()
 ### 3.1 Train / validation split
 train_val_split = TrainValSplits(project_id=project_id)
 train_val_split_area = ReloadableArea(train_val_split)
-unlabeled_images_select = SelectString(
-    values=["keep unlabeled images", "ignore unlabeled images"]
-)
+unlabeled_images_select = SelectString(values=["keep unlabeled images", "ignore unlabeled images"])
 unlabeled_images_select_f = Field(
     content=unlabeled_images_select,
     title="What to do with unlabeled images",
@@ -347,13 +337,9 @@ bbox_miss_collapse_item = Collapse.Item(
 bbox_miss_collapse = Collapse(items=[bbox_miss_collapse_item])
 bbox_miss_collapse.hide()
 bbox_miss_text = Text("Select options to handle them:")
-bbox_miss_manual_checkbox = Checkbox(
-    "Stop processing (I will add bounding boxes manually)", checked=True
-)
+bbox_miss_manual_checkbox = Checkbox("Stop processing (I will add bounding boxes manually)", checked=True)
 bbox_miss_manual_checkbox.disable()
-bbox_miss_auto_checkbox = Checkbox(
-    "Continue processing (bounding boxes will be created automatically)"
-)
+bbox_miss_auto_checkbox = Checkbox("Continue processing (bounding boxes will be created automatically)")
 bbox_miss_btn = Button("OK")
 bbox_miss_content = Container(
     widgets=[
@@ -364,9 +350,7 @@ bbox_miss_content = Container(
         bbox_miss_btn,
     ]
 )
-bbox_miss_dialog = Dialog(
-    title="Images with no bounding boxes", content=bbox_miss_content
-)
+bbox_miss_dialog = Dialog(title="Images with no bounding boxes", content=bbox_miss_content)
 bbox_miss_check_progress = Progress()
 train_val_content = Container(
     [
@@ -404,11 +388,7 @@ model_tabs_descriptions = [
     "Models trained outside Supervisely",
     "Models trained in Supervsely and located in Team Files",
 ]
-models_table_columns = [
-    key
-    for key in g.det_models_data[0].keys()
-    if key not in ["weights_url", "yaml_config"]
-]
+models_table_columns = [key for key in g.det_models_data[0].keys() if key not in ["weights_url", "yaml_config"]]
 models_table_rows = []
 for element in g.det_models_data:
     models_table_rows.append(list(element.values())[:-2])
@@ -539,15 +519,11 @@ freeze_layers_f = Field(
     ),
 )
 n_frozen_layers_input = InputNumber(value=1, min=1, max=90)
-n_frozen_layers_input_f = Field(
-    content=n_frozen_layers_input, title="Number of layers to freeze"
-)
+n_frozen_layers_input_f = Field(content=n_frozen_layers_input, title="Number of layers to freeze")
 n_frozen_layers_input_f.hide()
 
 # Model Benchmark evaluation
-run_model_benchmark_checkbox = Checkbox(
-    content="Run Model Benchmark evaluation", checked=True
-)
+run_model_benchmark_checkbox = Checkbox(content="Run Model Benchmark evaluation", checked=True)
 run_speedtest_checkbox = Checkbox(content="Run speed test", checked=True)
 model_benchmark_f = Field(
     Container(
@@ -560,9 +536,7 @@ model_benchmark_f = Field(
     description=f"Generate evaluation dashboard with visualizations and detailed analysis of the model performance after training. The best checkpoint will be used for evaluation. You can also run speed test to evaluate model inference speed.",
 )
 docs_link = '<a href="https://docs.supervisely.com/neural-networks/model-evaluation-benchmark/" target="_blank">documentation</a>'
-model_benchmark_learn_more = Text(
-    f"Learn more about Model Benchmark in the {docs_link}.", status="info"
-)
+model_benchmark_learn_more = Text(f"Learn more about Model Benchmark in the {docs_link}.", status="info")
 
 # ONNX / TensorRT export
 export_model_switch = Switch(switched=False)
@@ -573,9 +547,7 @@ export_model_switch_f = Field(
     "Exported model can be deployed in various frameworks and used for efficient inference on edge devices.",
 )
 export_onnx_checkbox = Checkbox(content="Export to ONNX", checked=False)
-export_tensorrt_checkbox = Checkbox(
-    content="Export to TensorRT (may take some time)", checked=False
-)
+export_tensorrt_checkbox = Checkbox(content="Export to TensorRT (may take some time)", checked=False)
 export_fp16_switch = Switch(switched=False)
 export_fp16_switch_f = Field(
     content=export_fp16_switch,
@@ -751,16 +723,12 @@ additional_gallery = GridGallery(
     show_opacity_slider=False,
     enable_zoom=True,
 )
-additional_gallery_f = Field(
-    additional_gallery, "Additional training results visualization"
-)
+additional_gallery_f = Field(additional_gallery, "Additional training results visualization")
 additional_gallery_f.hide()
 progress_bar_upload_artifacts = Progress()
 model_benchmark_pbar = SlyTqdm()
 model_benchmark_pbar_secondary = Progress(hide_on_finish=False)
-train_done = DoneLabel(
-    "Training completed. Training artifacts were uploaded to Team Files"
-)
+train_done = DoneLabel("Training completed. Training artifacts were uploaded to Team Files")
 train_done.hide()
 train_progress_content = Container(
     [
@@ -843,13 +811,9 @@ def on_dataset_selected(new_dataset_ids):
         select_data_button.show()
     update_globals(new_dataset_ids)
     if sly.project.download.is_cached(project_id):
-        use_cache_text.text = (
-            "Use cached data stored on the agent to optimize project download"
-        )
+        use_cache_text.text = "Use cached data stored on the agent to optimize project download"
     else:
-        use_cache_text.text = (
-            "Cache data on the agent to optimize project download for future trainings"
-        )
+        use_cache_text.text = "Cache data on the agent to optimize project download for future trainings"
 
 
 @select_data_button.click
@@ -862,16 +826,10 @@ def select_input_data():
     update_globals(list(selected_datasets))
     update_split_tabs_for_nested_datasets(dataset_ids)
     sly.logger.debug(f"Select data button clicked, selected datasets: {dataset_ids}")
-    project_shapes = [
-        cls.geometry_type.geometry_name() for cls in project_meta.obj_classes
-    ]
+    project_shapes = [cls.geometry_type.geometry_name() for cls in project_meta.obj_classes]
     if "bitmap" in project_shapes or "polygon" in project_shapes:
         task_type_select.set_value("instance segmentation")
-        models_table_columns = [
-            key
-            for key in g.seg_models_data[0].keys()
-            if key not in ["weights_url", "yaml_config"]
-        ]
+        models_table_columns = [key for key in g.seg_models_data[0].keys() if key not in ["weights_url", "yaml_config"]]
         models_table_subtitles = [None] * len(models_table_columns)
         models_table_rows = []
         for element in g.seg_models_data:
@@ -884,9 +842,7 @@ def select_input_data():
     elif "graph" in project_shapes:
         task_type_select.set_value("pose estimation")
         models_table_columns = [
-            key
-            for key in g.pose_models_data[0].keys()
-            if key not in ["weights_url", "yaml_config"]
+            key for key in g.pose_models_data[0].keys() if key not in ["weights_url", "yaml_config"]
         ]
         models_table_subtitles = [None] * len(models_table_columns)
         models_table_rows = []
@@ -946,16 +902,10 @@ def on_classes_selected(selected_classes):
 
 @task_type_select.value_changed
 def select_task(task_type):
-    project_shapes = [
-        cls.geometry_type.geometry_name() for cls in project_meta.obj_classes
-    ]
+    project_shapes = [cls.geometry_type.geometry_name() for cls in project_meta.obj_classes]
     if task_type == "object detection":
         select_classes_button.enable()
-        models_table_columns = [
-            key
-            for key in g.det_models_data[0].keys()
-            if key not in ["weights_url", "yaml_config"]
-        ]
+        models_table_columns = [key for key in g.det_models_data[0].keys() if key not in ["weights_url", "yaml_config"]]
         models_table_subtitles = [None] * len(models_table_columns)
         models_table_rows = []
         for element in g.det_models_data:
@@ -976,9 +926,7 @@ def select_task(task_type):
         else:
             select_classes_button.enable()
             models_table_columns = [
-                key
-                for key in g.seg_models_data[0].keys()
-                if key not in ["weights_url", "yaml_config"]
+                key for key in g.seg_models_data[0].keys() if key not in ["weights_url", "yaml_config"]
             ]
             models_table_subtitles = [None] * len(models_table_columns)
             models_table_rows = []
@@ -1007,9 +955,7 @@ def select_task(task_type):
         else:
             select_classes_button.enable()
             models_table_columns = [
-                key
-                for key in g.pose_models_data[0].keys()
-                if key not in ["weights_url", "yaml_config"]
+                key for key in g.pose_models_data[0].keys() if key not in ["weights_url", "yaml_config"]
             ]
             models_table_subtitles = [None] * len(models_table_columns)
             models_table_rows = []
@@ -1026,14 +972,10 @@ def select_task(task_type):
 def select_classes():
     selected_classes = classes_table.get_selected_classes()
     selected_shapes = [
-        cls.geometry_type.geometry_name()
-        for cls in project_meta.obj_classes
-        if cls.name in selected_classes
+        cls.geometry_type.geometry_name() for cls in project_meta.obj_classes if cls.name in selected_classes
     ]
     task_type = task_type_select.get_value()
-    if task_type == "pose estimation" and (
-        "graph" not in selected_shapes or "rectangle" not in selected_shapes
-    ):
+    if task_type == "pose estimation" and ("graph" not in selected_shapes or "rectangle" not in selected_shapes):
         sly.app.show_dialog(
             title="Pose estimation task requires input project to have at least one class of shape graph and one class of shape rectangle",
             description="Please, select both classes of shape rectangle and graph or change task type",
@@ -1219,9 +1161,7 @@ def change_export_model(value):
 @additional_config_radio.value_changed
 def change_radio(value):
     if value == "import template from Team Files":
-        remote_templates_dir = os.path.join(
-            framework_folder, task_type_select.get_value(), "param_templates"
-        )
+        remote_templates_dir = os.path.join(framework_folder, task_type_select.get_value(), "param_templates")
         templates = api.file.list(team_id, remote_templates_dir)
         if len(templates) == 0:
             no_templates_notification.show()
@@ -1236,9 +1176,7 @@ def change_radio(value):
 
 @additional_config_template_select.value_changed
 def change_template(template):
-    remote_templates_dir = os.path.join(
-        framework_folder, task_type_select.get_value(), "param_templates"
-    )
+    remote_templates_dir = os.path.join(framework_folder, task_type_select.get_value(), "param_templates")
     remote_template_path = os.path.join(remote_templates_dir, template)
     local_template_path = os.path.join(g.app_data_dir, template)
     api.file.download(team_id, remote_template_path, local_template_path)
@@ -1250,9 +1188,7 @@ def change_template(template):
 @save_template_button.click
 def upload_template():
     save_template_button.loading = True
-    remote_templates_dir = os.path.join(
-        framework_folder, task_type_select.get_value(), "param_templates"
-    )
+    remote_templates_dir = os.path.join(framework_folder, task_type_select.get_value(), "param_templates")
     additional_params = train_settings_editor.get_text()
     ryaml = ruamel.yaml.YAML()
     additional_params = ryaml.load(additional_params)
@@ -1372,9 +1308,7 @@ def start_training():
     if os.path.exists(local_artifacts_dir):
         sly.fs.remove_dir(local_artifacts_dir)
     # get number of images in selected datasets
-    dataset_infos = [
-        api.dataset.get_info_by_id(dataset_id) for dataset_id in dataset_ids
-    ]
+    dataset_infos = [api.dataset.get_info_by_id(dataset_id) for dataset_id in dataset_ids]
     n_images = sum([info.images_count for info in dataset_infos])
     download_project(
         api=api,
@@ -1387,9 +1321,7 @@ def start_training():
     # remove unselected classes
     selected_classes = classes_table.get_selected_classes()
     try:
-        sly.Project.remove_classes_except(
-            g.project_dir, classes_to_keep=selected_classes, inplace=True
-        )
+        sly.Project.remove_classes_except(g.project_dir, classes_to_keep=selected_classes, inplace=True)
     except Exception:
         if not use_cache:
             raise
@@ -1404,33 +1336,23 @@ def start_training():
             use_cache=False,
             progress=progress_bar_download_project,
         )
-        sly.Project.remove_classes_except(
-            g.project_dir, classes_to_keep=selected_classes, inplace=True
-        )
+        sly.Project.remove_classes_except(g.project_dir, classes_to_keep=selected_classes, inplace=True)
 
     # remove classes with unnecessary shapes
     if task_type != "object detection":
         unnecessary_classes = []
         for cls in project_meta.obj_classes:
-            if (
-                cls.name in selected_classes
-                and cls.geometry_type.geometry_name() not in necessary_geometries
-            ):
+            if cls.name in selected_classes and cls.geometry_type.geometry_name() not in necessary_geometries:
                 unnecessary_classes.append(cls.name)
         if len(unnecessary_classes) > 0:
-            sly.Project.remove_classes(
-                g.project_dir, classes_to_remove=unnecessary_classes, inplace=True
-            )
+            sly.Project.remove_classes(g.project_dir, classes_to_remove=unnecessary_classes, inplace=True)
     # extract geometry configs
     if task_type == "pose estimation":
         nodes_order = []
         cls2config = {}
         total_config = {"nodes": {}, "edges": []}
         for cls in project_meta.obj_classes:
-            if (
-                cls.name in selected_classes
-                and cls.geometry_type.geometry_name() == "graph"
-            ):
+            if cls.name in selected_classes and cls.geometry_type.geometry_name() == "graph":
                 g.keypoints_classes.append(cls.name)
                 geometry_config = cls.geometry_config
                 cls2config[cls.name] = geometry_config
@@ -1471,9 +1393,7 @@ def start_training():
                     description="Val split length is 0 after ignoring images. Please check your data",
                     status="error",
                 )
-                raise ValueError(
-                    "Val split length is 0 after ignoring images. Please check your data"
-                )
+                raise ValueError("Val split length is 0 after ignoring images. Please check your data")
     # split the data
     try:
         train_val_split._project_fs = sly.Project(g.project_dir, sly.OpenMode.READ)
@@ -1638,9 +1558,7 @@ def start_training():
     plot_notification.show()
     watch_file = os.path.join(local_artifacts_dir, "results.csv")
     plotted_train_batches = []
-    remote_images_path = (
-        f"{framework_folder}/{task_type}/{project_info.name}/images/{g.app_session_id}/"
-    )
+    remote_images_path = f"{framework_folder}/{task_type}/{project_info.name}/images/{g.app_session_id}/"
 
     def check_number(value):
         # if value is not str, NaN, infinity or negative infinity
@@ -1695,9 +1613,7 @@ def start_training():
             if check_number(float(train_seg_loss)):
                 grid_plot.add_scalar("train/seg loss", float(train_seg_loss), int(x))
         if check_number(float(precision)):
-            grid_plot.add_scalar(
-                "precision & recall/precision", float(precision), int(x)
-            )
+            grid_plot.add_scalar("precision & recall/precision", float(precision), int(x))
         if check_number(float(recall)):
             grid_plot.add_scalar("precision & recall/recall", float(recall), int(x))
         if check_number(float(val_box_loss)):
@@ -1718,16 +1634,10 @@ def start_training():
         # visualize train batch
         batch = f"train_batch{x-1}.jpg"
         local_train_batches_path = os.path.join(local_artifacts_dir, batch)
-        if (
-            os.path.exists(local_train_batches_path)
-            and batch not in plotted_train_batches
-            and x < 10
-        ):
+        if os.path.exists(local_train_batches_path) and batch not in plotted_train_batches and x < 10:
             plotted_train_batches.append(batch)
             remote_train_batches_path = os.path.join(remote_images_path, batch)
-            tf_train_batches_info = api.file.upload(
-                team_id, local_train_batches_path, remote_train_batches_path
-            )
+            tf_train_batches_info = api.file.upload(team_id, local_train_batches_path, remote_train_batches_path)
             if sly.is_production():
                 train_batches_gallery.append(tf_train_batches_info.storage_path)
             else:
@@ -1741,7 +1651,8 @@ def start_training():
         progress_bar_epochs(message="Epochs:", total=n_epochs_input.get_value()),
     )
     # train model and upload best checkpoints to team files
-    device = 0 if torch.cuda.is_available() else "cpu"
+    device_count = {torch.cuda.device_count()}
+    device = ",".join([str(i) for i in range(device_count)]) if device_count > 1 else "0"
     data_path = os.path.join(g.yolov8_project_dir, "data_config.yaml")
     sly.logger.info(f"Using device: {device}")
 
@@ -1786,9 +1697,7 @@ def start_training():
         app_is_stopped = app.is_stopped()
         not_ready_for_api_calls = False
         if not app_is_stopped:
-            not_ready_for_api_calls = (
-                api.app.is_ready_for_api_calls(g.app_session_id) is False
-            )
+            not_ready_for_api_calls = api.app.is_ready_for_api_calls(g.app_session_id) is False
         if (
             (app_is_stopped or not_ready_for_api_calls)
             and sly.is_production()
@@ -1840,9 +1749,7 @@ def start_training():
         val_batch_labels_id, val_batch_preds_id = None, None
         labels_path = os.path.join(local_artifacts_dir, f"val_batch{i}_labels.jpg")
         if os.path.exists(labels_path):
-            remote_labels_path = os.path.join(
-                remote_images_path, f"val_batch{i}_labels.jpg"
-            )
+            remote_labels_path = os.path.join(remote_images_path, f"val_batch{i}_labels.jpg")
             tf_labels_info = api.file.upload(team_id, labels_path, remote_labels_path)
             if sly.is_production():
                 val_batch_labels_id = val_batches_gallery.append(
@@ -1856,9 +1763,7 @@ def start_training():
                 )
         preds_path = os.path.join(local_artifacts_dir, f"val_batch{i}_pred.jpg")
         if os.path.exists(preds_path):
-            remote_preds_path = os.path.join(
-                remote_images_path, f"val_batch{i}_pred.jpg"
-            )
+            remote_preds_path = os.path.join(remote_images_path, f"val_batch{i}_pred.jpg")
             tf_preds_info = api.file.upload(team_id, preds_path, remote_preds_path)
             if sly.is_production():
                 val_batch_preds_id = val_batches_gallery.append(
@@ -1879,16 +1784,10 @@ def start_training():
     stop_training_tooltip.hide()
 
     # visualize additional training results
-    confusion_matrix_path = os.path.join(
-        local_artifacts_dir, "confusion_matrix_normalized.png"
-    )
+    confusion_matrix_path = os.path.join(local_artifacts_dir, "confusion_matrix_normalized.png")
     if os.path.exists(confusion_matrix_path):
-        remote_confusion_matrix_path = os.path.join(
-            remote_images_path, "confusion_matrix_normalized.png"
-        )
-        tf_confusion_matrix_info = api.file.upload(
-            team_id, confusion_matrix_path, remote_confusion_matrix_path
-        )
+        remote_confusion_matrix_path = os.path.join(remote_images_path, "confusion_matrix_normalized.png")
+        tf_confusion_matrix_info = api.file.upload(team_id, confusion_matrix_path, remote_confusion_matrix_path)
         if not app.is_stopped():
             if sly.is_production():
                 additional_gallery.append(tf_confusion_matrix_info.storage_path)
@@ -1916,9 +1815,7 @@ def start_training():
     box_f1_curve_path = os.path.join(local_artifacts_dir, "BoxF1_curve.png")
     if os.path.exists(box_f1_curve_path):
         remote_box_f1_curve_path = os.path.join(remote_images_path, "BoxF1_curve.png")
-        tf_box_f1_curve_info = api.file.upload(
-            team_id, box_f1_curve_path, remote_box_f1_curve_path
-        )
+        tf_box_f1_curve_info = api.file.upload(team_id, box_f1_curve_path, remote_box_f1_curve_path)
         if not app.is_stopped():
             if sly.is_production():
                 additional_gallery.append(tf_box_f1_curve_info.storage_path)
@@ -1927,9 +1824,7 @@ def start_training():
     pose_f1_curve_path = os.path.join(local_artifacts_dir, "PoseF1_curve.png")
     if os.path.exists(pose_f1_curve_path):
         remote_pose_f1_curve_path = os.path.join(remote_images_path, "PoseF1_curve.png")
-        tf_pose_f1_curve_info = api.file.upload(
-            team_id, pose_f1_curve_path, remote_pose_f1_curve_path
-        )
+        tf_pose_f1_curve_info = api.file.upload(team_id, pose_f1_curve_path, remote_pose_f1_curve_path)
         if not app.is_stopped():
             if sly.is_production():
                 additional_gallery.append(tf_pose_f1_curve_info.storage_path)
@@ -1938,9 +1833,7 @@ def start_training():
     mask_f1_curve_path = os.path.join(local_artifacts_dir, "MaskF1_curve.png")
     if os.path.exists(mask_f1_curve_path):
         remote_mask_f1_curve_path = os.path.join(remote_images_path, "MaskF1_curve.png")
-        tf_mask_f1_curve_info = api.file.upload(
-            team_id, mask_f1_curve_path, remote_mask_f1_curve_path
-        )
+        tf_mask_f1_curve_info = api.file.upload(team_id, mask_f1_curve_path, remote_mask_f1_curve_path)
         if not app.is_stopped():
             if sly.is_production():
                 additional_gallery.append(tf_mask_f1_curve_info.storage_path)
@@ -1951,16 +1844,12 @@ def start_training():
     # rename best checkpoint file
     uploading_artefacts_f.show()
     if not os.path.isfile(watch_file):
-        sly.logger.warning(
-            "The file with results does not exist, training was not completed successfully."
-        )
+        sly.logger.warning("The file with results does not exist, training was not completed successfully.")
         app.stop()
         return
     results = pd.read_csv(watch_file)
     results.columns = [col.replace(" ", "") for col in results.columns]
-    results["fitness"] = (0.1 * results["metrics/mAP50(B)"]) + (
-        0.9 * results["metrics/mAP50-95(B)"]
-    )
+    results["fitness"] = (0.1 * results["metrics/mAP50(B)"]) + (0.9 * results["metrics/mAP50-95(B)"])
     print("Final results:")
     print(results)
     best_epoch = results["fitness"].idxmax()
@@ -2053,9 +1942,7 @@ def start_training():
             )
         progress_bar_upload_artifacts.hide()
     else:
-        sly.logger.info(
-            "Uploading training artifacts before stopping the app... (progress bar is disabled)"
-        )
+        sly.logger.info("Uploading training artifacts before stopping the app... (progress bar is disabled)")
         remote_artifacts_dir = api.file.upload_directory(
             team_id=sly.env.team_id(),
             local_dir=local_artifacts_dir,
@@ -2071,22 +1958,16 @@ def start_training():
     if run_model_benchmark_checkbox.is_checked():
         try:
             if task_type in [TaskType.INSTANCE_SEGMENTATION, TaskType.OBJECT_DETECTION]:
-                sly.logger.info(
-                    f"Creating the report for the best model: {best_filename!r}"
-                )
+                sly.logger.info(f"Creating the report for the best model: {best_filename!r}")
                 creating_report_f.show()
                 model_benchmark_pbar.show()
-                model_benchmark_pbar(
-                    message="Starting Model Benchmark evaluation...", total=1
-                )
+                model_benchmark_pbar(message="Starting Model Benchmark evaluation...", total=1)
 
                 # 0. Serve trained model
                 m = YOLOv8ModelMB(
                     model_dir=local_artifacts_dir + "/weights",
                     use_gui=False,
-                    custom_inference_settings=os.path.join(
-                        root_source_path, "serve", "custom_settings.yaml"
-                    ),
+                    custom_inference_settings=os.path.join(root_source_path, "serve", "custom_settings.yaml"),
                 )
 
                 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -2117,32 +1998,18 @@ def start_training():
 
                 if split_method == "Based on datasets":
                     if hasattr(train_val_split._val_ds_select, "get_selected_ids"):
-                        benchmark_dataset_ids = (
-                            train_val_split._val_ds_select.get_selected_ids()
-                        )
-                        train_dataset_ids = (
-                            train_val_split._train_ds_select.get_selected_ids()
-                        )
+                        benchmark_dataset_ids = train_val_split._val_ds_select.get_selected_ids()
+                        train_dataset_ids = train_val_split._train_ds_select.get_selected_ids()
                     else:
-                        benchmark_dataset_ids = [
-                            ds_name_to_id[d]
-                            for d in train_val_split._val_ds_select.get_value()
-                        ]
-                        train_dataset_ids = [
-                            ds_name_to_id[d]
-                            for d in train_val_split._train_ds_select.get_value()
-                        ]
+                        benchmark_dataset_ids = [ds_name_to_id[d] for d in train_val_split._val_ds_select.get_value()]
+                        train_dataset_ids = [ds_name_to_id[d] for d in train_val_split._train_ds_select.get_value()]
                 else:
 
                     def get_image_infos_by_split(split: list):
-                        ds_infos_dict = {
-                            ds_info.name: ds_info for ds_info in dataset_infos
-                        }
+                        ds_infos_dict = {ds_info.name: ds_info for ds_info in dataset_infos}
                         image_names_per_dataset = {}
                         for item in split:
-                            image_names_per_dataset.setdefault(
-                                item.dataset_name, []
-                            ).append(item.name)
+                            image_names_per_dataset.setdefault(item.dataset_name, []).append(item.name)
                         image_infos = []
                         for (
                             dataset_name,
@@ -2153,16 +2020,16 @@ def start_training():
                             ds_info = ds_infos_dict[dataset_name]
                             for batched_names in sly.batched(image_names, 200):
                                 batch = api.image.get_list(
-                                        ds_info.id,
-                                        filters=[
-                                            {
-                                                "field": "name",
-                                                "operator": "in",
-                                                "value": batched_names,
-                                            }
-                                        ],
-                                        force_metadata_for_links=False,
-                                    )
+                                    ds_info.id,
+                                    filters=[
+                                        {
+                                            "field": "name",
+                                            "operator": "in",
+                                            "value": batched_names,
+                                        }
+                                    ],
+                                    force_metadata_for_links=False,
+                                )
                                 image_infos.extend(batch)
                         return image_infos
 
@@ -2194,9 +2061,7 @@ def start_training():
                         classes_whitelist=selected_classes,
                     )
                 else:
-                    raise ValueError(
-                        f"Model benchmark for task type {task_type} is not implemented (coming soon)"
-                    )
+                    raise ValueError(f"Model benchmark for task type {task_type} is not implemented (coming soon)")
 
                 train_info = {
                     "app_session_id": g.app_session_id,
@@ -2210,18 +2075,14 @@ def start_training():
                 bm.run_inference(session)
 
                 # 3. Pull results from the server
-                gt_project_path, dt_project_path = bm.download_projects(
-                    save_images=False
-                )
+                gt_project_path, dt_project_path = bm.download_projects(save_images=False)
 
                 # 4. Evaluate
                 bm._evaluate(gt_project_path, dt_project_path)
                 bm._dump_eval_inference_info(bm._eval_inference_info)
 
                 # 5. Upload evaluation results
-                eval_res_dir = get_eval_results_dir_name(
-                    api, g.app_session_id, project_info
-                )
+                eval_res_dir = get_eval_results_dir_name(api, g.app_session_id, project_info)
                 bm.upload_eval_results(eval_res_dir + "/evaluation/")
 
                 # 6. Speed test
@@ -2237,12 +2098,9 @@ def start_training():
                 report_id = bm.report.id
                 eval_metrics = bm.key_metrics
                 primary_metric_name = bm.primary_metric_name
-                
 
                 # 8. UI updates
-                benchmark_report_template = api.file.get_info_by_path(
-                    sly.env.team_id(), remote_dir + "template.vue"
-                )
+                benchmark_report_template = api.file.get_info_by_path(sly.env.team_id(), remote_dir + "template.vue")
                 model_benchmark_done = True
                 creating_report_f.hide()
                 model_benchmark_report.set(benchmark_report_template)
@@ -2277,9 +2135,7 @@ def start_training():
     # ----------------------------------------------- - ---------------------------------------------- #
 
     if not app.is_stopped():
-        file_info = api.file.get_info_by_path(
-            sly.env.team_id(), remote_artifacts_dir + "/results.csv"
-        )
+        file_info = api.file.get_info_by_path(sly.env.team_id(), remote_artifacts_dir + "/results.csv")
         train_artifacts_folder.set(file_info)
         # finish training
         start_training_button.loading = False
@@ -2304,12 +2160,16 @@ def start_training():
         task_type=task_type,
         config_path=None,
     )
-    
+
     try:
         sly.logger.info("Creating experiment info")
-        create_experiment(selected_model_name, remote_artifacts_dir, local_artifacts_dir, report_id, eval_metrics, primary_metric_name)
+        create_experiment(
+            selected_model_name, remote_artifacts_dir, local_artifacts_dir, report_id, eval_metrics, primary_metric_name
+        )
     except Exception as e:
-        sly.logger.warning(f"Couldn't create experiment, this training session will not appear in experiments table. Error: {e}")
+        sly.logger.warning(
+            f"Couldn't create experiment, this training session will not appear in experiments table. Error: {e}"
+        )
 
     # delete app data since it is no longer needed
     sly.fs.remove_dir(g.app_data_dir)
@@ -2352,11 +2212,7 @@ def auto_train(request: Request):
         models_data = g.seg_models_data
 
     task_type_select.set_value(task_type)
-    models_table_columns = [
-        key
-        for key in models_data[0].keys()
-        if key not in ["weights_url", "yaml_config"]
-    ]
+    models_table_columns = [key for key in models_data[0].keys() if key not in ["weights_url", "yaml_config"]]
     models_table_subtitles = [None] * len(models_table_columns)
     models_table_rows = []
     for element in models_data:
@@ -2378,9 +2234,7 @@ def auto_train(request: Request):
         dataset_ids = [dataset_info.id for dataset_info in dataset_infos]
     else:
         dataset_ids = state["dataset_ids"]
-        dataset_infos = [
-            api.dataset.get_info_by_id(dataset_id) for dataset_id in dataset_ids
-        ]
+        dataset_infos = [api.dataset.get_info_by_id(dataset_id) for dataset_id in dataset_ids]
 
     dataset_selector.disable()
     classes_table.read_project_from_id(project_id, dataset_ids=dataset_ids)
@@ -2423,25 +2277,17 @@ def auto_train(request: Request):
     if task_type != "object detection":
         unnecessary_classes = []
         for cls in project_meta.obj_classes:
-            if (
-                cls.name in selected_classes
-                and cls.geometry_type.geometry_name() not in necessary_geometries
-            ):
+            if cls.name in selected_classes and cls.geometry_type.geometry_name() not in necessary_geometries:
                 unnecessary_classes.append(cls.name)
         if len(unnecessary_classes) > 0:
-            sly.Project.remove_classes(
-                g.project_dir, classes_to_remove=unnecessary_classes, inplace=True
-            )
+            sly.Project.remove_classes(g.project_dir, classes_to_remove=unnecessary_classes, inplace=True)
     # extract geometry configs
     if task_type == "pose estimation":
         nodes_order = []
         cls2config = {}
         total_config = {"nodes": {}, "edges": []}
         for cls in project_meta.obj_classes:
-            if (
-                cls.name in selected_classes
-                and cls.geometry_type.geometry_name() == "graph"
-            ):
+            if cls.name in selected_classes and cls.geometry_type.geometry_name() == "graph":
                 g.keypoints_classes.append(cls.name)
                 geometry_config = cls.geometry_config
                 cls2config[cls.name] = geometry_config
@@ -2533,9 +2379,7 @@ def auto_train(request: Request):
                     found_index = True
                     break
             if not found_index:
-                sly.logger.info(
-                    f"Unable to find requested model: {selected_model}, switching to default"
-                )
+                sly.logger.info(f"Unable to find requested model: {selected_model}, switching to default")
                 selected_index = 0
         selected_dict = models_data[selected_index]
         weights_url = selected_dict["weights_url"]
@@ -2656,9 +2500,7 @@ def auto_train(request: Request):
 
     watch_file = os.path.join(local_artifacts_dir, "results.csv")
     plotted_train_batches = []
-    remote_images_path = (
-        f"{framework_folder}/{task_type}/{project_info.name}/images/{g.app_session_id}/"
-    )
+    remote_images_path = f"{framework_folder}/{task_type}/{project_info.name}/images/{g.app_session_id}/"
 
     def check_number(value):
         # if value is not str, NaN, infinity or negative infinity
@@ -2713,9 +2555,7 @@ def auto_train(request: Request):
             if check_number(float(train_seg_loss)):
                 grid_plot.add_scalar("train/seg loss", float(train_seg_loss), int(x))
         if check_number(float(precision)):
-            grid_plot.add_scalar(
-                "precision & recall/precision", float(precision), int(x)
-            )
+            grid_plot.add_scalar("precision & recall/precision", float(precision), int(x))
         if check_number(float(recall)):
             grid_plot.add_scalar("precision & recall/recall", float(recall), int(x))
         if check_number(float(val_box_loss)):
@@ -2736,16 +2576,10 @@ def auto_train(request: Request):
         # visualize train batch
         batch = f"train_batch{x-1}.jpg"
         local_train_batches_path = os.path.join(local_artifacts_dir, batch)
-        if (
-            os.path.exists(local_train_batches_path)
-            and batch not in plotted_train_batches
-            and x < 10
-        ):
+        if os.path.exists(local_train_batches_path) and batch not in plotted_train_batches and x < 10:
             plotted_train_batches.append(batch)
             remote_train_batches_path = os.path.join(remote_images_path, batch)
-            tf_train_batches_info = api.file.upload(
-                team_id, local_train_batches_path, remote_train_batches_path
-            )
+            tf_train_batches_info = api.file.upload(team_id, local_train_batches_path, remote_train_batches_path)
             train_batches_gallery.append(tf_train_batches_info.storage_path)
             if x == 1:
                 train_batches_gallery_f.show()
@@ -2753,12 +2587,11 @@ def auto_train(request: Request):
     watcher = Watcher(
         watch_file,
         on_results_file_changed,
-        progress_bar_epochs(
-            message="Epochs:", total=state.get("n_epochs", n_epochs_input.get_value())
-        ),
+        progress_bar_epochs(message="Epochs:", total=state.get("n_epochs", n_epochs_input.get_value())),
     )
     # train model and upload best checkpoints to team files
-    device = 0 if torch.cuda.is_available() else "cpu"
+    device_count = {torch.cuda.device_count()}
+    device = ",".join([str(i) for i in range(device_count)]) if device_count > 1 else "0"
     data_path = os.path.join(g.yolov8_project_dir, "data_config.yaml")
     sly.logger.info(f"Using device: {device}")
 
@@ -2943,9 +2776,7 @@ def auto_train(request: Request):
         val_batch_labels_id, val_batch_preds_id = None, None
         labels_path = os.path.join(local_artifacts_dir, f"val_batch{i}_labels.jpg")
         if os.path.exists(labels_path):
-            remote_labels_path = os.path.join(
-                remote_images_path, f"val_batch{i}_labels.jpg"
-            )
+            remote_labels_path = os.path.join(remote_images_path, f"val_batch{i}_labels.jpg")
             tf_labels_info = api.file.upload(team_id, labels_path, remote_labels_path)
             val_batch_labels_id = val_batches_gallery.append(
                 image_url=tf_labels_info.storage_path,
@@ -2953,9 +2784,7 @@ def auto_train(request: Request):
             )
         preds_path = os.path.join(local_artifacts_dir, f"val_batch{i}_pred.jpg")
         if os.path.exists(preds_path):
-            remote_preds_path = os.path.join(
-                remote_images_path, f"val_batch{i}_pred.jpg"
-            )
+            remote_preds_path = os.path.join(remote_images_path, f"val_batch{i}_pred.jpg")
             tf_preds_info = api.file.upload(team_id, preds_path, remote_preds_path)
             val_batch_preds_id = val_batches_gallery.append(
                 image_url=tf_preds_info.storage_path,
@@ -2970,16 +2799,10 @@ def auto_train(request: Request):
     stop_training_tooltip.hide()
 
     # visualize additional training results
-    confusion_matrix_path = os.path.join(
-        local_artifacts_dir, "confusion_matrix_normalized.png"
-    )
+    confusion_matrix_path = os.path.join(local_artifacts_dir, "confusion_matrix_normalized.png")
     if os.path.exists(confusion_matrix_path):
-        remote_confusion_matrix_path = os.path.join(
-            remote_images_path, "confusion_matrix_normalized.png"
-        )
-        tf_confusion_matrix_info = api.file.upload(
-            team_id, confusion_matrix_path, remote_confusion_matrix_path
-        )
+        remote_confusion_matrix_path = os.path.join(remote_images_path, "confusion_matrix_normalized.png")
+        tf_confusion_matrix_info = api.file.upload(team_id, confusion_matrix_path, remote_confusion_matrix_path)
         if not app.is_stopped():
             additional_gallery.append(tf_confusion_matrix_info.storage_path)
             additional_gallery_f.show()
@@ -2998,25 +2821,19 @@ def auto_train(request: Request):
     box_f1_curve_path = os.path.join(local_artifacts_dir, "BoxF1_curve.png")
     if os.path.exists(box_f1_curve_path):
         remote_box_f1_curve_path = os.path.join(remote_images_path, "BoxF1_curve.png")
-        tf_box_f1_curve_info = api.file.upload(
-            team_id, box_f1_curve_path, remote_box_f1_curve_path
-        )
+        tf_box_f1_curve_info = api.file.upload(team_id, box_f1_curve_path, remote_box_f1_curve_path)
         if not app.is_stopped():
             additional_gallery.append(tf_box_f1_curve_info.storage_path)
     pose_f1_curve_path = os.path.join(local_artifacts_dir, "PoseF1_curve.png")
     if os.path.exists(pose_f1_curve_path):
         remote_pose_f1_curve_path = os.path.join(remote_images_path, "PoseF1_curve.png")
-        tf_pose_f1_curve_info = api.file.upload(
-            team_id, pose_f1_curve_path, remote_pose_f1_curve_path
-        )
+        tf_pose_f1_curve_info = api.file.upload(team_id, pose_f1_curve_path, remote_pose_f1_curve_path)
         if not app.is_stopped():
             additional_gallery.append(tf_pose_f1_curve_info.storage_path)
     mask_f1_curve_path = os.path.join(local_artifacts_dir, "MaskF1_curve.png")
     if os.path.exists(mask_f1_curve_path):
         remote_mask_f1_curve_path = os.path.join(remote_images_path, "MaskF1_curve.png")
-        tf_mask_f1_curve_info = api.file.upload(
-            team_id, mask_f1_curve_path, remote_mask_f1_curve_path
-        )
+        tf_mask_f1_curve_info = api.file.upload(team_id, mask_f1_curve_path, remote_mask_f1_curve_path)
         if not app.is_stopped():
             additional_gallery.append(tf_mask_f1_curve_info.storage_path)
 
@@ -3024,16 +2841,12 @@ def auto_train(request: Request):
 
     # rename best checkpoint file
     if not os.path.isfile(watch_file):
-        sly.logger.warning(
-            "The file with results does not exist, training was not completed successfully."
-        )
+        sly.logger.warning("The file with results does not exist, training was not completed successfully.")
         app.stop()
         return
     results = pd.read_csv(watch_file)
     results.columns = [col.replace(" ", "") for col in results.columns]
-    results["fitness"] = (0.1 * results["metrics/mAP50(B)"]) + (
-        0.9 * results["metrics/mAP50-95(B)"]
-    )
+    results["fitness"] = (0.1 * results["metrics/mAP50(B)"]) + (0.9 * results["metrics/mAP50-95(B)"])
     print("Final results:")
     print(results)
     best_epoch = results["fitness"].idxmax()
@@ -3126,9 +2939,7 @@ def auto_train(request: Request):
             )
         progress_bar_upload_artifacts.hide()
     else:
-        sly.logger.info(
-            "Uploading training artifacts before stopping the app... (progress bar is disabled)"
-        )
+        sly.logger.info("Uploading training artifacts before stopping the app... (progress bar is disabled)")
         remote_artifacts_dir = api.file.upload_directory(
             team_id=sly.env.team_id(),
             local_dir=local_artifacts_dir,
@@ -3143,22 +2954,16 @@ def auto_train(request: Request):
     if run_model_benchmark_checkbox.is_checked():
         try:
             if task_type in [TaskType.INSTANCE_SEGMENTATION, TaskType.OBJECT_DETECTION]:
-                sly.logger.info(
-                    f"Creating the report for the best model: {best_filename!r}"
-                )
+                sly.logger.info(f"Creating the report for the best model: {best_filename!r}")
                 creating_report_f.show()
                 model_benchmark_pbar.show()
-                model_benchmark_pbar(
-                    message="Starting Model Benchmark evaluation...", total=1
-                )
+                model_benchmark_pbar(message="Starting Model Benchmark evaluation...", total=1)
 
                 # 0. Serve trained model
                 m = YOLOv8ModelMB(
                     model_dir=local_artifacts_dir + "/weights",
                     use_gui=False,
-                    custom_inference_settings=os.path.join(
-                        root_source_path, "serve", "custom_settings.yaml"
-                    ),
+                    custom_inference_settings=os.path.join(root_source_path, "serve", "custom_settings.yaml"),
                 )
 
                 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -3188,23 +2993,15 @@ def auto_train(request: Request):
                 split_method = train_val_split._content.get_active_tab()
 
                 if split_method == "Based on datasets":
-                    benchmark_dataset_ids = (
-                        train_val_split._val_ds_select.get_selected_ids()
-                    )
-                    train_dataset_ids = (
-                        train_val_split._train_ds_select.get_selected_ids()
-                    )
+                    benchmark_dataset_ids = train_val_split._val_ds_select.get_selected_ids()
+                    train_dataset_ids = train_val_split._train_ds_select.get_selected_ids()
                 else:
 
                     def get_image_infos_by_split(split: list):
-                        ds_infos_dict = {
-                            ds_info.name: ds_info for ds_info in dataset_infos
-                        }
+                        ds_infos_dict = {ds_info.name: ds_info for ds_info in dataset_infos}
                         image_names_per_dataset = {}
                         for item in split:
-                            image_names_per_dataset.setdefault(
-                                item.dataset_name, []
-                            ).append(item.name)
+                            image_names_per_dataset.setdefault(item.dataset_name, []).append(item.name)
                         image_infos = []
                         for (
                             dataset_name,
@@ -3215,16 +3012,16 @@ def auto_train(request: Request):
                             ds_info = ds_infos_dict[dataset_name]
                             for batched_names in sly.batched(image_names, 200):
                                 batch = api.image.get_list(
-                                        ds_info.id,
-                                        filters=[
-                                            {
-                                                "field": "name",
-                                                "operator": "in",
-                                                "value": batched_names,
-                                            }
-                                        ],
-                                        force_metadata_for_links=False,
-                                    )
+                                    ds_info.id,
+                                    filters=[
+                                        {
+                                            "field": "name",
+                                            "operator": "in",
+                                            "value": batched_names,
+                                        }
+                                    ],
+                                    force_metadata_for_links=False,
+                                )
                                 image_infos.extend(batch)
                         return image_infos
 
@@ -3256,9 +3053,7 @@ def auto_train(request: Request):
                         classes_whitelist=selected_classes,
                     )
                 else:
-                    raise ValueError(
-                        f"Model benchmark for task type {task_type} is not implemented (coming soon)"
-                    )
+                    raise ValueError(f"Model benchmark for task type {task_type} is not implemented (coming soon)")
 
                 train_info = {
                     "app_session_id": g.app_session_id,
@@ -3272,18 +3067,14 @@ def auto_train(request: Request):
                 bm.run_inference(session)
 
                 # 3. Pull results from the server
-                gt_project_path, dt_project_path = bm.download_projects(
-                    save_images=False
-                )
+                gt_project_path, dt_project_path = bm.download_projects(save_images=False)
 
                 # 4. Evaluate
                 bm._evaluate(gt_project_path, dt_project_path)
                 bm._dump_eval_inference_info(bm._eval_inference_info)
 
                 # 5. Upload evaluation results
-                eval_res_dir = get_eval_results_dir_name(
-                    api, g.app_session_id, project_info
-                )
+                eval_res_dir = get_eval_results_dir_name(api, g.app_session_id, project_info)
                 bm.upload_eval_results(eval_res_dir + "/evaluation/")
 
                 # 6. Speed test
@@ -3301,9 +3092,7 @@ def auto_train(request: Request):
                 primary_metric_name = bm.primary_metric_name
 
                 # 8. UI updates
-                benchmark_report_template = api.file.get_info_by_path(
-                    sly.env.team_id(), remote_dir + "template.vue"
-                )
+                benchmark_report_template = api.file.get_info_by_path(sly.env.team_id(), remote_dir + "template.vue")
                 model_benchmark_done = True
                 creating_report_f.hide()
                 model_benchmark_report.set(benchmark_report_template)
@@ -3338,9 +3127,7 @@ def auto_train(request: Request):
     # ----------------------------------------------- - ---------------------------------------------- #
 
     if not app.is_stopped():
-        file_info = api.file.get_info_by_path(
-            sly.env.team_id(), remote_artifacts_dir + "/results.csv"
-        )
+        file_info = api.file.get_info_by_path(sly.env.team_id(), remote_artifacts_dir + "/results.csv")
         train_artifacts_folder.set(file_info)
         # finish training
         card_train_artifacts.unlock()
@@ -3360,9 +3147,13 @@ def auto_train(request: Request):
 
     try:
         sly.logger.info("Creating experiment info")
-        create_experiment(selected_model_name, remote_artifacts_dir, local_artifacts_dir, report_id, eval_metrics, primary_metric_name)
+        create_experiment(
+            selected_model_name, remote_artifacts_dir, local_artifacts_dir, report_id, eval_metrics, primary_metric_name
+        )
     except Exception as e:
-        sly.logger.warning(f"Couldn't create experiment, this training session will not appear in experiments table. Error: {e}")
+        sly.logger.warning(
+            f"Couldn't create experiment, this training session will not appear in experiments table. Error: {e}"
+        )
 
     # delete app data since it is no longer needed
     sly.fs.remove_dir(g.app_data_dir)
@@ -3381,9 +3172,7 @@ def export_weights(weights_path, selected_model_name, progress: SlyTqdm):
     pbar = None
     fp16 = export_fp16_switch.is_switched()
     if export_tensorrt_checkbox.is_checked():
-        pbar = progress(
-            message="Exporting model to TensorRT, this may take some time...", total=1
-        )
+        pbar = progress(message="Exporting model to TensorRT, this may take some time...", total=1)
         export_checkpoint(weights_path, format="engine", fp16=fp16, dynamic=False)
         pbar.update(1)
     if export_onnx_checkbox.is_checked():
@@ -3401,17 +3190,13 @@ def dump_yaml_checkpoint_info(weights_path, selected_model_name):
         "model_name": selected_model_name,
         "architecture": architecture,
     }
-    checkpoint_info_path = os.path.join(
-        os.path.dirname(weights_path), "checkpoint_info.yaml"
-    )
+    checkpoint_info_path = os.path.join(os.path.dirname(weights_path), "checkpoint_info.yaml")
     with open(checkpoint_info_path, "w") as f:
         yaml.dump(checkpoint_info, f)
     return checkpoint_info_path
 
 
-def create_experiment(
-    model_name, remote_dir, local_dir, report_id=None, eval_metrics=None, primary_metric_name=None
-):
+def create_experiment(model_name, remote_dir, local_dir, report_id=None, eval_metrics=None, primary_metric_name=None):
     train_info = TrainInfo(**g.sly_yolo_generated_metadata)
     experiment_info = yolov8_artifacts.convert_train_to_experiment_info(train_info)
     experiment_info.experiment_name = f"{g.app_session_id}_{project_info.name}_{model_name}"
