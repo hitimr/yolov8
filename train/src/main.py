@@ -1,11 +1,23 @@
 import os
 import re
-from dotenv import load_dotenv
-from dataclasses import asdict
+import sys
+from pathlib import Path
 
+# -------------------------------------------------------------------
+# If the launcher spawns torch.distributed workers, make sure they can
+# find your `src/` package by adding the `train` folder to PYTHONPATH.
+project_root = Path(__file__).parents[1]  # train/
+sys.path.insert(0, str(project_root))
+os.environ["PYTHONPATH"] = os.environ.get("PYTHONPATH", "") + os.pathsep + str(project_root)
+# -------------------------------------------------------------------
+
+# enforce uppercase LOGLEVEL for torch.elastic
 if "LOGLEVEL" in os.environ:
     os.environ["LOGLEVEL"] = os.environ["LOGLEVEL"].upper()
+
+# make all GPUs visible to torch.distributed
 os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"
+
 
 import math
 import random
