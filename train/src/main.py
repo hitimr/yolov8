@@ -1307,6 +1307,14 @@ def start_training():
 
     if os.path.exists(local_artifacts_dir):
         sly.fs.remove_dir(local_artifacts_dir)
+
+    # Determine device
+    if torch.cuda.is_available():
+        device = ",".join([str(i) for i in range(torch.cuda.device_count())])  # Use all GPUs
+    else:
+        device = "cpu"
+    sly.logger.info(f"Using device(s): {device}")
+
     # get number of images in selected datasets
     dataset_infos = [api.dataset.get_info_by_id(dataset_id) for dataset_id in dataset_ids]
     n_images = sum([info.images_count for info in dataset_infos])
@@ -1651,8 +1659,7 @@ def start_training():
         progress_bar_epochs(message="Epochs:", total=n_epochs_input.get_value()),
     )
     # train model and upload best checkpoints to team files
-    device_count = {torch.cuda.device_count()}
-    device = ",".join([str(i) for i in range(device_count)]) if device_count > 1 else "0"
+    device = 0 if torch.cuda.is_available() else "cpu"
     data_path = os.path.join(g.yolov8_project_dir, "data_config.yaml")
     sly.logger.info(f"Using device: {device}")
 
@@ -1718,7 +1725,7 @@ def start_training():
             batch=batch_size_input.get_value(),
             imgsz=image_size_input.get_value(),
             save_period=1000,
-            device=device,
+            device=device,  # Updated to use all GPUs
             workers=n_workers_input.get_value(),
             optimizer=select_optimizer.get_value(),
             pretrained=pretrained,
@@ -2590,8 +2597,7 @@ def auto_train(request: Request):
         progress_bar_epochs(message="Epochs:", total=state.get("n_epochs", n_epochs_input.get_value())),
     )
     # train model and upload best checkpoints to team files
-    device_count = {torch.cuda.device_count()}
-    device = ",".join([str(i) for i in range(device_count)]) if device_count > 1 else "0"
+    device = 0 if torch.cuda.is_available() else "cpu"
     data_path = os.path.join(g.yolov8_project_dir, "data_config.yaml")
     sly.logger.info(f"Using device: {device}")
 
@@ -2733,7 +2739,7 @@ def auto_train(request: Request):
             batch=batch_size,
             imgsz=image_size,
             save_period=1000,
-            device=device,
+            device=device,  # Updated to use all GPUs
             workers=n_workers,
             optimizer=optimizer,
             pretrained=pretrained,
