@@ -3,7 +3,6 @@ import re
 from dotenv import load_dotenv
 from dataclasses import asdict
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 import math
 import random
 import threading
